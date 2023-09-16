@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CubeMover : MonoBehaviour
 {
@@ -15,24 +16,18 @@ public class CubeMover : MonoBehaviour
 
     private void Start()
     {
+        
         _magnificationFactor = 100f;
         _currentScale = transform.localScale;
         _endScale = new Vector3(transform.localScale.x + _magnificationFactor, transform.localScale.y + _magnificationFactor, transform.localScale.z + _magnificationFactor);
+        
     }
 
     private void Update()
     {
-
-        ChangeScale(ref _currentScale.x, ref _endScale.x);
-        ChangeScale(ref _currentScale.y, ref _endScale.y);
-        ChangeScale(ref _currentScale.z, ref _endScale.z);
+        _currentScale = Vector3.MoveTowards(_currentScale, _endScale, _speedMagnification * Time.deltaTime);
         transform.localScale = _currentScale;
         transform.Rotate(0, _speedRotation * Time.deltaTime, 0);
         transform.Translate(transform.forward * _moveSpeed * Time.deltaTime, Space.World);
-    }
-
-    private void ChangeScale(ref float currentScale, ref float endScale)
-    {
-        currentScale = Mathf.MoveTowards(currentScale, endScale, _speedMagnification * Time.deltaTime);
     }
 }
